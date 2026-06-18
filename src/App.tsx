@@ -31,11 +31,11 @@ const MAIN_ADMINS = [
   'hcrsindia@gmail.com',
   'admin@hcrs.society',
   '9645934571@hcrs.society',
-  'mabarikiyafoods@gmail.com'
+  'mabarikiyafoods@gmail.com',
+  'hcrskerala@gmail.com'
 ];
 
 const SECOND_ADMINS = [
-  'hcrskerala@gmail.com',
   'hcrskasaragod@hcrs.society',
   'hcrsksd@hcrs.society',
   'hcrskannur@hcrs.society',

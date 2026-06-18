@@ -27,7 +27,8 @@ service cloud.firestore {
                  'hcrsindia@gmail.com',
                  'admin@hcrs.society',
                  '9645934571@hcrs.society',
-                 'mabarikiyafoods@gmail.com'
+                 'mabarikiyafoods@gmail.com',
+                 'hcrskerala@gmail.com'
                ]
              );
     }
@@ -36,7 +37,6 @@ service cloud.firestore {
       return isSignedIn() && 
              request.auth.token.email != null && (
                request.auth.token.email in [
-                 'hcrskerala@gmail.com',
                  'hcrskasaragod@hcrs.society',
                  'hcrsksd@hcrs.society',
                  'hcrskannur@hcrs.society',
