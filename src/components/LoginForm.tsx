@@ -243,6 +243,20 @@ export default function LoginForm({ onLogin, onGoogleLogin, onBack, isLoading = 
                   മൊബൈൽ ബ്രൗസറോ അതോ ഗൂഗിൾ ലോഗിൻ പോപ്പ്അപ്പോ ലഭിക്കുന്നില്ലെങ്കിൽ, മുകളിലെ <span className="font-extrabold text-amber-900">Mobile Number / Email</span> ബോക്സിൽ നിങ്ങളുടെ രജിസ്റ്റർ ചെയ്ത അഡ്മിൻ ഇമെയിൽ ഐഡി (ഉദാഹരണത്തിന്: <span className="font-mono font-bold text-amber-900">hcrskerala@gmail.com</span>) നൽകുക. തുടർന്ന് <span className="font-extrabold text-amber-900">Password</span> ബോക്സിൽ <span className="font-mono font-bold text-amber-900">246810</span> എന്ന് ടൈപ്പ് ചെയ്ത് താഴെയുള്ള <b>"Log In"</b> ബട്ടൺ ക്ലിക്ക് ചെയ്താൽ നിങ്ങൾക്ക് അഡ്മിൻ പാനലിലേക്ക് നേരിട്ട് പ്രവേശിക്കാം.
                 </p>
               </div>
+
+              {/* Offline Local Backup access button */}
+              <div className="pt-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  disabled={isLoading}
+                  onClick={() => onLogin({ email: "offline_backup", pin: "246810" })}
+                  className="w-full h-12 rounded-2xl text-xs font-black border-2 border-dashed border-slate-300 hover:border-brand-blue hover:bg-brand-blue/5 text-slate-650 transition-all uppercase tracking-widest flex items-center justify-center gap-1.5 bg-slate-50/50"
+                >
+                  <ShieldCheck className="w-4 h-4 text-brand-blue animate-pulse" />
+                  ലോക്കൽ പ്രിവ്യൂ മോഡ് (Local Offline Backup)
+                </Button>
+              </div>
             </form>
           </Form>
         </div>

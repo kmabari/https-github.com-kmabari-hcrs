@@ -3,6 +3,7 @@ import path from "path";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
+import fs from "fs";
 
 dotenv.config();
 
@@ -665,6 +666,22 @@ A: ബാധിത കുടുംബങ്ങളെ പിന്തുണയ്
       console.error("Gemini support chatbot error:", error);
       const fallbackText = generateServerFallbackResponse(message, verifiedMember, orgSettings);
       res.json({ text: fallbackText });
+    }
+  });
+
+  // API endpoint to serve local extracted old users backup
+  app.get("/api/local-backup-users", (req, res) => {
+    try {
+      const backupPath = path.join(process.cwd(), 'extracted_old_users.json');
+      if (fs.existsSync(backupPath)) {
+        const data = fs.readFileSync(backupPath, 'utf8');
+        res.json(JSON.parse(data));
+      } else {
+        res.status(404).json({ error: "Local backup file not found." });
+      }
+    } catch (err: any) {
+      console.error("Failed to read local backup users:", err);
+      res.status(500).json({ error: err.message });
     }
   });
 

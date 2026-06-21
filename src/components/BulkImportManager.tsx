@@ -1196,6 +1196,47 @@ export default function BulkImportManager({ members, adminUser, onRefresh }: Bul
                 </div>
               )}
 
+              {/* Duplicate conflict audit list */}
+              {duplicateRecords.length > 0 && (
+                <div className="border border-rose-200 bg-rose-50/10 p-5 rounded-2xl space-y-3">
+                  <p className="text-xs font-bold text-rose-800 flex items-center gap-2">
+                    <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
+                    Duplicate Records Alert (തനിപ്പകർപ്പുകൾ): Detected {duplicateRecords.length} profiles that already exist in the system database.
+                  </p>
+                  <p className="text-[11px] text-slate-600 font-medium">
+                    താഴെ കാണിക്കുന്ന റെക്കോർഡുകൾ നിലവിലെ യൂസർ ഡാറ്റാബേസിലുള്ള വിവരങ്ങളുമായി മാച്ച് ചെയ്യുന്നതിനാൽ അവ ഓട്ടോമാറ്റിക്കായി ഒഴിവാക്കപ്പെട്ടവയാണ് (Skipped). ഇവർ ഏതൊക്കെയാണെന്ന് കാണുക:
+                  </p>
+                  
+                  <div className="max-h-[220px] overflow-y-auto border border-rose-100 rounded-xl bg-white text-[10.5px]">
+                    <table className="w-full text-left table-auto">
+                      <thead className="bg-rose-50/40 text-rose-900 border-b border-rose-100 font-bold sticky top-0">
+                        <tr>
+                          <th className="p-2 w-14">Row</th>
+                          <th className="p-2">Name (പേര്)</th>
+                          <th className="p-2">Mobile (ഫോൺ)</th>
+                          <th className="p-2">Reason (ഒഴിവാക്കപ്പെടാനുള്ള കാരണം)</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-rose-50 font-semibold text-rose-950">
+                        {duplicateRecords.map((dup, id) => (
+                          <tr key={id} className="hover:bg-rose-50/20">
+                            <td className="p-2 font-mono text-slate-400">{dup.rowNum}</td>
+                            <td className="p-2 text-slate-900 font-bold">{dup.name}</td>
+                            <td className="p-2">{dup.mobile || 'N/A'}</td>
+                            <td className="p-2">
+                              <span className="inline-flex items-center gap-1.5 text-rose-700 bg-rose-50 border border-rose-100 px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase">
+                                {dup.duplicateReason === 'Mobile Number duplicate' ? 'ഫോൺ നമ്പർ ദ ഡ്യൂപ്ലിക്കേറ്റ്' : 'മെമ്പർഷിപ്പ് ഐഡി ഡ്യൂപ്ലിക്കേറ്റ്'} 
+                                <span className="font-mono font-normal">({dup.duplicateReason})</span>
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+
               {/* Duplicate conflict options configuration */}
               <div className="space-y-3 bg-slate-50 p-6 rounded-2xl border border-slate-200">
                 <h4 className="text-xs font-black text-slate-700 uppercase tracking-wider">Configure Duplicate Collisions Treatment:</h4>

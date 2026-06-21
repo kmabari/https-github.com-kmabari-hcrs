@@ -67,8 +67,12 @@ const getSafeFirestoreSettings = () => {
   }
 };
 
-export const db = initializeFirestore(app, getSafeFirestoreSettings(), finalConfig.firestoreDatabaseId);
-export const secondaryDb = initializeFirestore(secondaryApp, getSafeFirestoreSettings(), finalConfig.firestoreDatabaseId);
+const databaseId = finalConfig.firestoreDatabaseId && finalConfig.firestoreDatabaseId !== '(default)' 
+  ? finalConfig.firestoreDatabaseId 
+  : undefined;
+
+export const db = initializeFirestore(app, getSafeFirestoreSettings(), databaseId);
+export const secondaryDb = initializeFirestore(secondaryApp, getSafeFirestoreSettings(), databaseId);
 export const auth = getAuth(app);
 export const secondaryAuth = getAuth(secondaryApp);
 export const storage = getStorage(app);
