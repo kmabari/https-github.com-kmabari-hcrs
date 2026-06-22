@@ -14,32 +14,62 @@ service cloud.firestore {
     function isMainAdmin() {
       return isSignedIn() && 
              request.auth.token.email != null && (
-               request.auth.token.email == 'kmabarikiyafoods@gmail.com' ||
-               request.auth.token.email == 'hcrsindia@gmail.com' ||
-               request.auth.token.email == 'admin@hcrs.society' ||
-               request.auth.token.email == '9645934571@hcrs.society' ||
-               request.auth.token.email == 'mabarikiyafoods@gmail.com' ||
-               request.auth.token.email == 'hcrskerala@gmail.com'
+               request.auth.token.email.lower() == 'kmabarikiyafoods@gmail.com' ||
+               request.auth.token.email.lower() == 'hcrsindia@gmail.com' ||
+               request.auth.token.email.lower() == 'admin@hcrs.society' ||
+               request.auth.token.email.lower() == '9645934571@hcrs.society' ||
+               request.auth.token.email.lower() == 'mabarikiyafoods@gmail.com' ||
+               request.auth.token.email.lower() == 'hcrskerala@gmail.com'
              );
     }
     
     function isSecondAdmin() {
       return isSignedIn() && 
              request.auth.token.email != null && (
-               request.auth.token.email == 'klmhcrs@gmail.com' ||
-               request.auth.token.email == 'alp.hcrs@gmail.com' ||
-               request.auth.token.email == 'ktmhcrs@gmail.com' ||
-               request.auth.token.email == 'idkhcrs@gmail.com' ||
-               request.auth.token.email == 'ekmhcrs@gmail.com' ||
-               request.auth.token.email == 'tsrhcrsfs@gmail.com' ||
-               request.auth.token.email == 'pkdhcrs@gmail.com' ||
-               request.auth.token.email == 'clthcrs@gmail.com' ||
-               request.auth.token.email == 'wayanadhcrs@gmail.com' ||
-               request.auth.token.email == 'knrhcrs@gmail.com' ||
-               request.auth.token.email == 'ksdhcrs@gmail.com' ||
-               request.auth.token.email == 'hcrs.tvm@gmail.com' ||
-               request.auth.token.email == 'hcrs.pta@gmail.com' ||
-               request.auth.token.email == 'hcrs.mpy@gmail.com'
+               request.auth.token.email.lower().matches('^hcrs.*@hcrs\\.society$') ||
+               request.auth.token.email.lower() == 'klmhcrs@gmail.com' ||
+               request.auth.token.email.lower() == 'alp.hcrs@gmail.com' ||
+               request.auth.token.email.lower() == 'ktmhcrs@gmail.com' ||
+               request.auth.token.email.lower() == 'idkhcrs@gmail.com' ||
+               request.auth.token.email.lower() == 'ekmhcrs@gmail.com' ||
+               request.auth.token.email.lower() == 'tsrhcrsfs@gmail.com' ||
+               request.auth.token.email.lower() == 'pkdhcrs@gmail.com' ||
+               request.auth.token.email.lower() == 'clthcrs@gmail.com' ||
+               request.auth.token.email.lower() == 'wayanadhcrs@gmail.com' ||
+               request.auth.token.email.lower() == 'knrhcrs@gmail.com' ||
+               request.auth.token.email.lower() == 'ksdhcrs@gmail.com' ||
+               request.auth.token.email.lower() == 'hcrs.tvm@gmail.com' ||
+               request.auth.token.email.lower() == 'hcrs.pta@gmail.com' ||
+               request.auth.token.email.lower() == 'hcrs.mpy@gmail.com' ||
+               request.auth.token.email.lower() == 'hcrskasaragod@hcrs.society' ||
+               request.auth.token.email.lower() == 'hcrsksd@hcrs.society' ||
+               request.auth.token.email.lower() == 'hcrskannur@hcrs.society' ||
+               request.auth.token.email.lower() == 'hcrsknr@hcrs.society' ||
+               request.auth.token.email.lower() == 'hcrswayanad@hcrs.society' ||
+               request.auth.token.email.lower() == 'hcrswyd@hcrs.society' ||
+               request.auth.token.email.lower() == 'hcrskozhikode@hcrs.society' ||
+               request.auth.token.email.lower() == 'hcrskoz@hcrs.society' ||
+               request.auth.token.email.lower() == 'hcrsmalappuram@hcrs.society' ||
+               request.auth.token.email.lower() == 'hcrsmlp@hcrs.society' ||
+               request.auth.token.email.lower() == 'hcrsmpm@hcrs.society' ||
+               request.auth.token.email.lower() == 'hcrspalakkad@hcrs.society' ||
+               request.auth.token.email.lower() == 'hcrspkd@hcrs.society' ||
+               request.auth.token.email.lower() == 'hcrsthrissur@hcrs.society' ||
+               request.auth.token.email.lower() == 'hcrstcr@hcrs.society' ||
+               request.auth.token.email.lower() == 'hcrsernakulam@hcrs.society' ||
+               request.auth.token.email.lower() == 'hcrsekm@hcrs.society' ||
+               request.auth.token.email.lower() == 'hcrsidukki@hcrs.society' ||
+               request.auth.token.email.lower() == 'hcrsidk@hcrs.society' ||
+               request.auth.token.email.lower() == 'hcrskottayam@hcrs.society' ||
+               request.auth.token.email.lower() == 'hcrsktm@hcrs.society' ||
+               request.auth.token.email.lower() == 'hcrsalappuzha@hcrs.society' ||
+               request.auth.token.email.lower() == 'hcrsalp@hcrs.society' ||
+               request.auth.token.email.lower() == 'hcrspathanamthitta@hcrs.society' ||
+               request.auth.token.email.lower() == 'hcrspta@hcrs.society' ||
+               request.auth.token.email.lower() == 'hcrskollam@hcrs.society' ||
+               request.auth.token.email.lower() == 'hcrsklm@hcrs.society' ||
+               request.auth.token.email.lower() == 'hcrsthiruvananthapuram@hcrs.society' ||
+               request.auth.token.email.lower() == 'hcrstvm@hcrs.society'
              );
     }
     
@@ -48,7 +78,8 @@ service cloud.firestore {
         isMainAdmin() || isSecondAdmin() || (
           exists(/databases/$(database)/documents/users/$(request.auth.uid)) && (
             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.get('isAdmin', false) == true || 
-            get(/databases/$(database)/documents/users/$(request.auth.uid)).data.get('role', 'member') in ['admin', 'operator']
+            get(/databases/$(database)/documents/users/$(request.auth.uid)).data.get('role', 'member') == 'admin' ||
+            get(/databases/$(database)/documents/users/$(request.auth.uid)).data.get('role', 'member') == 'operator'
           )
         )
       );
@@ -75,8 +106,12 @@ service cloud.firestore {
         (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
          resource.data.userMobile == get(/databases/$(database)/documents/users/$(request.auth.uid)).data.mobile)
       );
-      // Let operators list all claims, and let authenticated users list with a filter/limit if needed
-      allow list: if isOperator() || (request.query.limit != null && request.query.limit <= 5);
+      // Let operators list all claims, let authenticated users list their own claims (via uid or userMobile), and support small-limit queries
+      allow list: if isOperator() || (request.query.limit != null && request.query.limit <= 5) || (isSignedIn() && (
+        resource.data.uid == request.auth.uid ||
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+         resource.data.userMobile == get(/databases/$(database)/documents/users/$(request.auth.uid)).data.mobile)
+      ));
       allow create: if isSignedIn();
       allow update: if isOperator() || (isSignedIn() && resource.data.uid == request.auth.uid);
       allow delete: if isAdmin();
@@ -84,7 +119,7 @@ service cloud.firestore {
     
     // support_tickets Collection: Ensure operators can query the list cleanly
     match /support_tickets/{ticketId} {
-      allow get, list: if isOperator() || resource == null;
+      allow read: if isOperator();
       allow create: if isSignedIn();
       allow update: if isOperator();
       allow delete: if isAdmin();

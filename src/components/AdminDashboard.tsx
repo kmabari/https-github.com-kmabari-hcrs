@@ -4705,7 +4705,13 @@ service cloud.firestore {
                   <div className="flex-1 space-y-2 w-full">
                     <div className="flex flex-col gap-1.5 justify-start">
                       <div className="flex items-center justify-between gap-4">
-                        <h3 className="text-2xl font-black text-slate-900">{viewingMember.name}</h3>
+                        <div className="flex items-center gap-2 group cursor-pointer" onClick={() => {
+                          navigator.clipboard.writeText(viewingMember.name);
+                          toast.success('പേര് കോപ്പി ചെയ്തു! (Name copied)');
+                        }}>
+                          <h3 className="text-2xl font-black text-slate-900 group-hover:text-blue-600 transition-colors">{viewingMember.name}</h3>
+                          <Copy className="w-4 h-4 text-slate-400 group-hover:text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </div>
                         <Badge className={viewingMember.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'}>
                           {viewingMember.status.toUpperCase()}
                         </Badge>
@@ -4721,6 +4727,45 @@ service cloud.firestore {
                           </span>
                         )}
                       </div>
+                    </div>
+
+                    {/* Copy Toolkit (കോപ്പി സൂത്രങ്ങൾ) */}
+                    <div className="flex items-center gap-2 flex-wrap pt-2 pb-1 border-b border-slate-100">
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        onClick={() => {
+                          navigator.clipboard.writeText(viewingMember.name);
+                          toast.success('പേര് കോപ്പി ചെയ്തു!');
+                        }}
+                        className="h-8 px-2.5 rounded-xl bg-slate-100 text-slate-700 font-extrabold text-[10px] md:text-xs hover:bg-slate-200 transition-colors flex items-center gap-1.5 border border-slate-200/50"
+                      >
+                        <Copy className="w-3.5 h-3.5 text-slate-500" /> പേര് കോപ്പി ചെയ്യുക
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        onClick={() => {
+                          const addrText = `${viewingMember.address || ''}${viewingMember.postOffice ? ', ' + viewingMember.postOffice + ' (P.O)' : ''}${viewingMember.pincode ? ', PIN: ' + viewingMember.pincode : ''}`;
+                          navigator.clipboard.writeText(addrText);
+                          toast.success('മേൽവിലാസം കോപ്പി ചെയ്തു!');
+                        }}
+                        className="h-8 px-2.5 rounded-xl bg-slate-100 text-slate-700 font-extrabold text-[10px] md:text-xs hover:bg-slate-200 transition-colors flex items-center gap-1.5 border border-slate-200/50"
+                      >
+                        <Copy className="w-3.5 h-3.5 text-slate-500" /> വിലാസം കോപ്പി ചെയ്യുക
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        onClick={() => {
+                          const labelText = `${viewingMember.name || ''}\n${viewingMember.address || ''}\n${viewingMember.postOffice ? viewingMember.postOffice + ' (P.O)' : ''}\nPIN: ${viewingMember.pincode || ''}\nPhone: ${viewingMember.mobile || ''}`;
+                          navigator.clipboard.writeText(labelText);
+                          toast.success('ലേബൽ വിവരങ്ങൾ കോപ്പി ചെയ്തു!');
+                        }}
+                        className="h-8 px-2.5 rounded-xl bg-slate-100 text-slate-700 font-extrabold text-[10px] md:text-xs hover:bg-slate-200 transition-colors flex items-center gap-1.5 border border-slate-200/50"
+                      >
+                        <Copy className="w-3.5 h-3.5 text-slate-500" /> പേരും വിലാസവും
+                      </Button>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 pt-2">
                        <DetailItem label="Mobile" value={viewingMember.mobile} icon={<Smartphone className="w-4 h-4" />} />
@@ -5596,9 +5641,20 @@ service cloud.firestore {
                     </h4>
                     {claimUser && (
                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-black">
-                          <div className="space-y-1">
-                             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Account Holder / Claimant (മെമ്പർ / ക്ലെയിം വ്യക്തി)</p>
-                             <p className="font-bold text-slate-850 text-sm flex items-center gap-1.5 flex-wrap">
+                          <div 
+                             onClick={() => {
+                                navigator.clipboard.writeText(claimUser.name);
+                                toast.success('പേര് കോപ്പി ചെയ്തു! (Name copied)');
+                             }}
+                             className="space-y-1 cursor-pointer group hover:bg-slate-100/50 p-2 rounded-2xl transition-all border border-transparent hover:border-slate-200"
+                          >
+                             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center justify-between">
+                                <span>Account Holder / Claimant (മെമ്പർ / ക്ലെയിം വ്യക്തി)</span>
+                                <span className="text-slate-450 group-hover:text-blue-600 flex items-center gap-1 text-[8px] font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                                   <Copy className="w-2.5 h-2.5" /> click to copy
+                                </span>
+                             </p>
+                             <p className="font-bold text-slate-850 text-sm flex items-center gap-1.5 flex-wrap bg-white p-2 rounded-xl border border-slate-100">
                                 {claimUser.name}
                                 {selectedClaim?.userName && selectedClaim.userName !== claimUser.name && (
                                    <span className="text-slate-500 font-bold">({selectedClaim.userName})</span>
@@ -5616,21 +5672,36 @@ service cloud.firestore {
                                 )}
                              </p>
                           </div>
-                          <div className="space-y-1">
+                          <div className="space-y-1 p-2">
                              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Member ID (മെമ്പർ ഐഡി നമ്പർ)</p>
-                             <p className="font-bold text-brand-magenta text-sm font-mono">{claimUser.membershipId || selectedClaim.membershipId || 'PENDING'}</p>
+                             <p className="font-bold text-brand-magenta text-sm font-mono bg-white p-2 rounded-xl border border-slate-100">{claimUser.membershipId || selectedClaim.membershipId || 'PENDING'}</p>
                            </div>
-                           <div className="space-y-1">
+                           <div className="space-y-1 p-2">
                               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Serial Number (സീരിയൽ നമ്പർ)</p>
-                              <p className="font-extrabold text-[#FF1493] text-sm font-mono bg-[#FF1493]/5 border border-[#FF1493]/15 px-2 py-0.5 rounded w-fit">#{selectedClaim.tokenNo ?? selectedClaim.serialNo ?? 'N/A'}</p>
+                              <div className="bg-white p-2 rounded-xl border border-slate-100">
+                                <p className="font-extrabold text-[#FF1493] text-sm font-mono bg-[#FF1493]/5 border border-[#FF1493]/15 px-2 py-0.5 rounded w-fit">#{selectedClaim.tokenNo ?? selectedClaim.serialNo ?? 'N/A'}</p>
+                              </div>
                           </div>
-                          <div className="space-y-1">
+                          <div className="space-y-1 p-2">
                              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Phone Number</p>
-                             <p className="font-bold text-slate-800">{claimUser.mobile}</p>
+                             <p className="font-bold text-slate-800 bg-white p-2 rounded-xl border border-slate-100">{claimUser.mobile}</p>
                           </div>
-                          <div className="space-y-1 sm:col-span-2">
-                             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Address (മേൽവിലാസം)</p>
-                             <p className="font-medium text-slate-700 leading-relaxed bg-white p-2.5 rounded-lg border border-slate-100 whitespace-pre-wrap">{claimUser.address}</p>
+                          <div 
+                             onClick={() => {
+                                navigator.clipboard.writeText(claimUser.address);
+                                toast.success('വിലാസം കോപ്പി ചെയ്തു! (Address copied)');
+                             }}
+                             className="space-y-1 sm:col-span-2 cursor-pointer group hover:bg-slate-100/50 p-2 rounded-2xl transition-all border border-transparent hover:border-slate-200"
+                          >
+                             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center justify-between">
+                                <span>Address (മേൽവിലാസം)</span>
+                                <span className="text-slate-450 group-hover:text-blue-600 flex items-center gap-1 text-[8px] font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                                   <Copy className="w-2.5 h-2.5" /> click to copy
+                                </span>
+                             </p>
+                             <p className="font-medium text-slate-700 leading-relaxed bg-white p-3 rounded-xl border border-slate-100 whitespace-pre-wrap">
+                                {claimUser.address}
+                             </p>
                           </div>
                           <div className="space-y-1">
                              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">District</p>
@@ -6170,13 +6241,32 @@ function StatsCard({ title, value, icon, color }: { title: string, value: number
 }
 
 function DetailItem({ label, value, icon }: { label: string, value?: string, icon?: React.ReactNode }) {
+  const handleCopy = () => {
+    if (!value || value === '---' || value === 'N/A') return;
+    navigator.clipboard.writeText(value);
+    toast.success(`${label} കോപ്പി ചെയ്തു!`);
+  };
+
+  const isCopyable = value && value !== '---' && value !== 'N/A';
+
   return (
-    <div className="space-y-1 bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
-      <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5 leading-none">
-        {icon && React.cloneElement(icon as React.ReactElement, { className: 'w-3 h-3 text-slate-405' })}
-        {label}
-      </p>
-      <p className="text-sm font-black text-slate-800 leading-tight break-all truncate">
+    <div 
+      onClick={isCopyable ? handleCopy : undefined}
+      className={cn(
+        "space-y-1 bg-white p-4 rounded-xl border border-slate-100 shadow-sm relative group transition-all",
+        isCopyable ? "cursor-pointer hover:border-slate-300 hover:bg-slate-50/70 active:scale-[0.98]" : ""
+      )}
+    >
+      <div className="flex justify-between items-center">
+        <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5 leading-none">
+          {icon && React.cloneElement(icon as React.ReactElement, { className: 'w-3 h-3 text-slate-400' })}
+          {label}
+        </p>
+        {isCopyable && (
+          <Copy className="w-3 h-3 text-slate-300 opacity-40 group-hover:opacity-100 transition-opacity whitespace-nowrap ml-1 shrink-0" />
+        )}
+      </div>
+      <p className="text-sm font-black text-slate-800 leading-tight break-all selection:bg-blue-100">
         {value || '---'}
       </p>
     </div>

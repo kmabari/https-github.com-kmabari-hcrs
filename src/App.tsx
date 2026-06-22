@@ -521,12 +521,23 @@ export default function App() {
     
     if (distLogin) {
       console.log("District login intent detected:", distLogin);
-      // We don't automatically log in, but we skip the landing page
-      setView('login');
       // Store the intent to guide the user to the correct dashboard after login
       sessionStorage.setItem('hcrs_district_intent', distLogin);
       sessionStorage.setItem('hcrs_direct_manual', 'true');
       setIsDirectManual(true);
+      
+      // We don't automatically log in, but we skip the landing page
+      setView('login');
+      
+      // Sign out any active session to make sure the user is presented with the correct prefilled district login credentials
+      signOut(auth)
+        .then(() => {
+          console.log("Logged out active user for new district login intent:", distLogin);
+          setUser(null);
+        })
+        .catch(err => {
+          console.error("Sign-out failed during district link redirect:", err);
+        });
       
       // Clean up the URL so the distLogin query param doesn't stay in the address bar
       window.history.replaceState({}, document.title, window.location.pathname);

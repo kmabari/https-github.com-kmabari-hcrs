@@ -692,6 +692,27 @@ A: ബാധിത കുടുംബങ്ങളെ പിന്തുണയ്
       appType: "spa",
     });
     app.use(vite.middlewares);
+    
+    // Explicit SPA fallback for deep paths in development
+    app.get('*all', async (req, res, next) => {
+      // Avoid intercepting API routes that might fall through
+      if (req.originalUrl.startsWith('/api')) {
+        return next();
+      }
+      try {
+        const url = req.originalUrl;
+        const indexHtmlPath = path.resolve(process.cwd(), 'index.html');
+        if (fs.existsSync(indexHtmlPath)) {
+          const html = fs.readFileSync(indexHtmlPath, 'utf-8');
+          const transformedHtml = await vite.transformIndexHtml(url, html);
+          res.status(200).set({ 'Content-Type': 'text/html' }).end(transformedHtml);
+        } else {
+          next();
+        }
+      } catch (e) {
+        next(e);
+      }
+    });
   } else {
     const distPath = path.join(process.cwd(), 'dist');
     app.use(express.static(distPath));
