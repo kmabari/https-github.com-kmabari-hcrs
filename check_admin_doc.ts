@@ -14,6 +14,10 @@ async function checkAdminDoc() {
     await signInWithEmailAndPassword(auth, "admin@hcrs.society", "246810");
     const uid = auth.currentUser?.uid;
     console.log("Logged in UID:", uid);
+    
+    // Print claims and idToken info
+    const tokenResult = await auth.currentUser?.getIdTokenResult();
+    console.log("Token Claims:", tokenResult?.claims);
 
     const docSnap = await getDoc(doc(db, 'users', uid!));
     if (docSnap.exists()) {

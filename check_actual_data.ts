@@ -26,7 +26,7 @@ async function testDatabase(label: string, config: any, dbId: string) {
   // Authenticate as Admin
   console.log("--- Authenticating with Email/Password ---");
   try {
-    const userCred = await signInWithEmailAndPassword(auth, "9645934571@hcrs.society", "246810");
+    const userCred = await signInWithEmailAndPassword(auth, "admin@hcrs.society", "246810");
     console.log("Log in successful! User ID:", userCred.user.uid);
   } catch (authErr: any) {
     console.error("Auth login failed:", authErr.message);

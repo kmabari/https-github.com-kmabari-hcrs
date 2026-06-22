@@ -26,20 +26,9 @@ service cloud.firestore {
     function isSecondAdmin() {
       return isSignedIn() && 
              request.auth.token.email != null && (
-               request.auth.token.email == 'klmhcrs@gmail.com' ||
-               request.auth.token.email == 'alp.hcrs@gmail.com' ||
-               request.auth.token.email == 'ktmhcrs@gmail.com' ||
-               request.auth.token.email == 'idkhcrs@gmail.com' ||
-               request.auth.token.email == 'ekmhcrs@gmail.com' ||
-               request.auth.token.email == 'tsrhcrsfs@gmail.com' ||
-               request.auth.token.email == 'pkdhcrs@gmail.com' ||
-               request.auth.token.email == 'clthcrs@gmail.com' ||
-               request.auth.token.email == 'wayanadhcrs@gmail.com' ||
-               request.auth.token.email == 'knrhcrs@gmail.com' ||
-               request.auth.token.email == 'ksdhcrs@gmail.com' ||
-               request.auth.token.email == 'hcrs.tvm@gmail.com' ||
-               request.auth.token.email == 'hcrs.pta@gmail.com' ||
-               request.auth.token.email == 'hcrs.mpy@gmail.com'
+               request.auth.token.email.matches('^hcrs.*@hcrs\\.society$') ||
+               request.auth.token.email.matches('^.*hcrs.*@gmail\\.com$') ||
+               request.auth.token.email.matches('^hcrs\\..*@gmail\\.com$')
              );
     }
     
@@ -48,7 +37,7 @@ service cloud.firestore {
         isMainAdmin() || isSecondAdmin() || (
           exists(/databases/$(database)/documents/users/$(request.auth.uid)) && (
             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.get('isAdmin', false) == true || 
-            get(/databases/$(database)/documents/users/$(request.auth.uid)).data.get('role', 'member') in ['admin', 'operator']
+            get(/databases/$(database)/documents/users/$(request.auth.uid)).data.get('role', 'member') == 'admin'
           )
         )
       );
@@ -56,8 +45,10 @@ service cloud.firestore {
     
     function isOperator() {
       return isSignedIn() && (
-        isAdmin() || (
+        isMainAdmin() || isSecondAdmin() || (
           exists(/databases/$(database)/documents/users/$(request.auth.uid)) && (
+            get(/databases/$(database)/documents/users/$(request.auth.uid)).data.get('isAdmin', false) == true || 
+            get(/databases/$(database)/documents/users/$(request.auth.uid)).data.get('role', 'member') == 'admin' ||
             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.get('role', 'member') == 'operator'
           )
         )

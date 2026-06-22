@@ -21,7 +21,7 @@ async function testClaims() {
 
     // Try a single write to 'claims' to see if write permission is allowed
     console.log("Attempting single write to claims...");
-    const testClaimRef = doc(db, 'claims', 'test_claim_id_by_admin');
+    const testClaimRef = doc(db, 'claims', 'test_claim_id_by_admin_' + Date.now());
     await setDoc(testClaimRef, {
       uid: cred.user.uid,
       userName: 'Test Admin User',

@@ -694,7 +694,7 @@ A: ബാധിത കുടുംബങ്ങളെ പിന്തുണയ്
     app.use(vite.middlewares);
     
     // Explicit SPA fallback for deep paths in development
-    app.get('*all', async (req, res, next) => {
+    app.get('/*any', async (req, res, next) => {
       // Avoid intercepting API routes that might fall through
       if (req.originalUrl.startsWith('/api')) {
         return next();
@@ -716,7 +716,7 @@ A: ബാധിത കുടുംബങ്ങളെ പിന്തുണയ്
   } else {
     const distPath = path.join(process.cwd(), 'dist');
     app.use(express.static(distPath));
-    app.get('*all', (req, res) => {
+    app.get('/*any', (req, res) => {
       res.sendFile(path.join(distPath, 'index.html'));
     });
   }
