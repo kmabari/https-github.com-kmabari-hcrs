@@ -1861,10 +1861,11 @@ export default function App() {
 
       // Automatically recalculate membership ID if constituency or district is updated/changed
       if (existingMember) {
+        const isNaInId = existingMember.membershipId && (existingMember.membershipId.toUpperCase().includes('-NA-') || existingMember.membershipId.toUpperCase().includes('/NA/'));
         const hasNewDistrict = data.district !== undefined && data.district !== existingMember.district;
         const hasNewAssembly = data.assemblyConstituency !== undefined && data.assemblyConstituency !== existingMember.assemblyConstituency;
 
-        if (hasNewDistrict || hasNewAssembly) {
+        if (hasNewDistrict || hasNewAssembly || (isNaInId && data.assemblyConstituency && data.assemblyConstituency !== 'NA' && data.assemblyConstituency !== '')) {
           const rawDistrict = data.district !== undefined ? data.district : existingMember.district;
           const rawAssembly = data.assemblyConstituency !== undefined ? data.assemblyConstituency : existingMember.assemblyConstituency;
 
@@ -1921,10 +1922,11 @@ export default function App() {
     try {
       const finalData = { ...updatedData };
       
+      const isNaInId = user.membershipId && (user.membershipId.toUpperCase().includes('-NA-') || user.membershipId.toUpperCase().includes('/NA/'));
       const hasNewDistrict = updatedData.district !== undefined && updatedData.district !== user.district;
       const hasNewAssembly = updatedData.assemblyConstituency !== undefined && updatedData.assemblyConstituency !== user.assemblyConstituency;
 
-      if (hasNewDistrict || hasNewAssembly) {
+      if (hasNewDistrict || hasNewAssembly || (isNaInId && updatedData.assemblyConstituency && updatedData.assemblyConstituency !== 'NA' && updatedData.assemblyConstituency !== '')) {
         const rawDistrict = updatedData.district !== undefined ? updatedData.district : user.district;
         const rawAssembly = updatedData.assemblyConstituency !== undefined ? updatedData.assemblyConstituency : user.assemblyConstituency;
 
@@ -2785,6 +2787,7 @@ export default function App() {
             onViewCard={() => setView('card')}
             onRefreshMembers={refreshMembersList}
             isSyncingMembers={isSyncingDocs}
+            onUpdatePhoto={handleUpdatePhoto}
           />
         </div>
       )}

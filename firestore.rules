@@ -49,7 +49,17 @@ service cloud.firestore {
       allow get: if isSignedIn() && (userId == request.auth.uid || isOperator() || resource.data.status == 'active' || resource.data.status == 'pending');
       allow list: if isOperator() || (request.query.limit != null && request.query.limit <= 5);
       allow create: if isSignedIn();
-      allow update, delete: if isOperator();
+      allow update: if isSignedIn() && (
+        (userId == request.auth.uid && 
+         (!request.resource.data.keys().hasAny(['role', 'isAdmin', 'isApproved', 'isPaid', 'status']) || 
+          (request.resource.data.role == resource.data.role &&
+           request.resource.data.isAdmin == resource.data.isAdmin &&
+           request.resource.data.isApproved == resource.data.isApproved &&
+           request.resource.data.isPaid == resource.data.isPaid &&
+           request.resource.data.status == resource.data.status)))
+        || isOperator()
+      );
+      allow delete: if isOperator();
     }
     
     match /gallery/{docId} {
