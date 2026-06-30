@@ -1517,13 +1517,16 @@ export default function App() {
         waStatus: isBulk ? 'Pending' : 'Sent',
         stateCode: 'KL',
         districtCode: distCode,
-        constituencyCode: assemblyCode
+        constituencyCode: assemblyCode,
+        renewalPending: false // Clear renewal pending flag upon any approval
       };
+
+      const finalRegDate = member.registrationDate || serverTimestamp();
 
       await updateDoc(doc(db, 'users', uid), {
         ...updatePayload,
         issueDate: serverTimestamp(),
-        registrationDate: serverTimestamp() // JOINING/REGISTRATION DATE updated to exact day of activation
+        registrationDate: finalRegDate
       });
 
       // Optimistic state update:
@@ -1531,7 +1534,7 @@ export default function App() {
         ...m, 
         ...updatePayload, 
         issueDate: now, 
-        registrationDate: now 
+        registrationDate: member.registrationDate ? (member.registrationDate.toDate ? member.registrationDate.toDate() : new Date(member.registrationDate)) : now
       } : m));
 
       toast.success('Member approved successfully', { id: loadingToast });
@@ -1846,6 +1849,7 @@ export default function App() {
       if (data.isApproved === true) {
         finalData.status = 'active';
         finalData.issueDate = serverTimestamp();
+        finalData.renewalPending = false;
         
         // Also set expiry if it doesn't have one
         if (!data.expiryDate && (!existingMember || !existingMember.expiryDate)) {
@@ -1900,7 +1904,8 @@ export default function App() {
       setMembers(prev => prev.map(m => m.uid === uid ? { 
         ...m, 
         ...finalData,
-        issueDate: (finalData.issueDate === serverTimestamp()) ? new Date() : (finalData.issueDate || m.issueDate)
+        issueDate: (finalData.issueDate === serverTimestamp()) ? new Date() : (finalData.issueDate || m.issueDate),
+        renewalDate: (finalData.renewalDate === serverTimestamp()) ? new Date() : (finalData.renewalDate || m.renewalDate)
       } : m));
 
       toast.success('Successfully updated.', { id: loadingToast });

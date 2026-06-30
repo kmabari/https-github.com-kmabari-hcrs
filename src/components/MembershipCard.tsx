@@ -409,7 +409,7 @@ export default function MembershipCard({ member, onUpdatePhoto, showCelebration 
                 <div className={`p-1 rounded-full shadow-[inset_0_1.5px_2px_rgba(255,255,255,1),0_3px_6px_rgba(0,0,0,0.5)] w-[52px] h-[52px] flex items-center justify-center border shrink-0 ${logoRingClass}`}>
                   <div className="bg-white rounded-full p-0.5 w-full h-full flex items-center justify-center overflow-hidden">
                     <img 
-                      src="https://i.ibb.co/DHKT5DRn/1000072034-removebg-preview-1.png" 
+                      src={settings.logoUrl || "https://i.ibb.co/My4KQNbH/1000072034-removebg-preview-1.png"} 
                       alt="HCRS Official Logo" 
                       className="w-10 h-10 object-contain" 
                       crossOrigin="anonymous" 
